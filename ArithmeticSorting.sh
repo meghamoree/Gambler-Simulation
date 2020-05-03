@@ -1,15 +1,13 @@
 #!/bin/bash -x 
 read -p "Enter the a value: " a 
 read -p "Enter the a value: " b 
-read -p "Enter the a value: " c 
+read -p "Enter the a value: " c
 
-UC2=$(( $a + $b * $c ))
-UC3=$(( $a * $b + $c ))
-UC4=$(( $a + $b / $c ))
-UC5=$(( $a % $b + $c )) 
+declare -A UC  
 
-echo $UC2
-echo $UC3
-echo $UC4
-echo $UC5
+UC[2]=$(( $a + $b * $c ))
+UC[3]=$(( $a * $b + $c ))
+UC[4]=$(( $a + $b / $c ))
+UC[5]=$(( $a % $b + $c )) 
 
+echo  "UseCases" ${UC[@]} 

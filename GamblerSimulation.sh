@@ -58,4 +58,24 @@ function playForMonth()
 	 fi
 
 }
+
+function wantToPlay()
+{
+        stakesAmount=100
+        bet=1
+        playingGoal=150
+        resignLimit=50
+        totalAmount=0
+        monthDays=20
+        echo
+
+        read -p "Do You Want To Start Game Again Y/N" choic 
+        if [[ $choice == y || $choice == Y ]]
+        then
+  playForMonth
+
+        else
+                        echo "Okay..Exiting..."
+        fi
+}
 playForMonth

@@ -3,6 +3,9 @@
 stakesAmount=100
 bet=1
 playingGoal=150
+resignLimit=50
+totalAmount=0
+monthDays=20
 
 Value=$(( RANDOM%2 ))
 if [ $Value -eq 1 ]
@@ -12,29 +15,47 @@ if [ $Value -eq 1 ]
 		echo Loss
 fi
 
-monthDays=20
-		for (( i=1; i<=$monthDays; i++ ))
-		do
-			stakeAmount=100
+declare -A winCount
+declare -A loseCount
+
+function playForMonth()
+{
+        echo "Starting Game...For Month.."
+        expectedGoalForMonth=$(($stakesAmount*$monthDays))
+
+        for (( i=1; i<=$monthDays; i++ ))
+	do
+		stakeAmount=100
+
                 while [[ $stakesAmount -gt $resignLimit && $stakesAmount -lt $playingGoal ]]
                 do
                         if [[ $((RANDOM%2)) -eq 1 ]]
                         then
-                                stakesAmount=$(($stakesAmount+$bet))
 
+                                stakesAmount=$(($stakesAmount+$bet))
                                         winCount[$i]=$((${winCount[$i]}+1))
-                        else
-                                stakesAmount=$(($stakesAmount-$bet))
+			else
+				stakesAmount=$(($stakesAmount-$bet))
                                         loseCount[$i]=$((${loseCount[$i]}+1))
+
                         fi
                  done
+	done
+                totalAmount=$(($totalAmount+$stakesAmount))
+                echo $totalAmount
 
-		if [ $stakesAmount -ge 150 ]
-		then
-			echo "U have won 50% of stake,u should resign for the day "
-			echo "Stake after winning is "$stake
-		else
-			echo "U have lost 50% of stake,u should resign for the day"
-			echo "Stake after loosing in "$stake
-		fi
-		done
+                if [[ $totalAmount -lt $expectedGoalForMonth ]]
+                then
+                                echo "Gambler Lose by $(($expectedGoalForMonth-$totalAmount))$"
+
+                elif [[ $totalAmount -gt $expectedGoalForMonth ]]
+                then
+                                echo "Gambler Won by $(($totalAmount-$expectedGoalForMonth))$"
+                                wantToPlay
+                else
+                                echo "Gambler Neither Won or Loose Neutral Achieved Goal"
+
+	 fi
+
+}
+playForMonth
